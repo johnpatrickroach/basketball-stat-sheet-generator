@@ -10,7 +10,8 @@ logging.basicConfig(filename='main.log', level=logging.INFO, format='%(asctime)s
 
 
 # Function to generate and save an image of the basketball stat sheet
-async def generate_and_save_image(csv_path, save_path, cell_width=150, cell_height=30):
+async def generate_and_save_image(csv_path, save_path, font_size=random.choice([12, 14, 16, 18]), cell_width=150,
+                                  cell_height=30):
     try:
         logging.info("Image generation process started.")
         # Read the CSV file
@@ -31,12 +32,12 @@ async def generate_and_save_image(csv_path, save_path, cell_width=150, cell_heig
 
         # Define pools for font styles, sizes, and weights
         # font_styles = ['arial.ttf', 'times.ttf', 'calibri.ttf']
-        font_sizes = [12, 14, 16, 18]
+        # font_sizes = [12, 14, 16, 18]
         # font_weights = ['normal', 'bold']
 
         # Randomly select font style, size, and weight
         # font_style = random.choice(font_styles)
-        font_size = random.choice(font_sizes)
+        # font_size = random.choice(font_sizes)
         # font_weight = random.choice(font_weights)
 
         # I don not have font files for different font styles:

@@ -55,7 +55,7 @@ The Basketball Stat Sheet Generator supports the following command-line paramete
 - `--random_seed`: Random seed for reproducibility (default: 42)
 - `--image_output_directory`: Output directory path for generated images (default: 'images')
 - `--csv_output_directory`: Output directory path for generated CSV files (default: 'data')
-- `--font_size`: Font size for the stat sheet image (default: 14)
+- `--font_size`: Font size for the stat sheet image (default: random.choice([12, 14, 16, 18]))
 - `--cell_width`: Width of each cell in the stat sheet image (default: 150)
 - `--cell_height`: Height of each cell in the stat sheet image (default: 30)
 

@@ -41,8 +41,8 @@ def parse_arguments():
         help="Output directory path (default: 'data')"
     )
     parser.add_argument(
-        "--font_size", type=int, default=14,
-        help="Font size for the stat sheet image (default: 14)"
+        "--font_size", type=int, default=random.choice([12, 14, 16, 18]),
+        help="Font size for the stat sheet image (default: random.choice([12, 14, 16, 18]))"
     )
     parser.add_argument(
         "--cell_width", type=int, default=150,
@@ -88,6 +88,7 @@ async def main():
             await generate_and_save_image(
                 csv_path=csv_path,
                 save_path=csv_path.replace(csv_save_path, image_save_path).replace(".csv", ".png"),
+                font_size=args.font_size,
                 cell_width=args.cell_width,
                 cell_height=args.cell_height
             )
