@@ -85,7 +85,7 @@ This command generates 3 sets of synthetic basketball stat sheets and images wit
 These to-do items outline potential enhancements and improvements that can be made to the Basketball Stat Sheet 
 Generator to enhance its functionality, readability, and versatility.
 
-- [ ] Add type hints
+- [x] Add type hints
 - [x] Add function doc strings
 - [ ] Add tests with Pytest
 - [ ] Try using Pandas for synthetic data generation
