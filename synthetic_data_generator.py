@@ -2,7 +2,7 @@
 import csv
 import logging
 import random
-from typing import AsyncGenerator
+from typing import Any, AsyncGenerator
 
 import numpy as np
 from faker import Faker
@@ -136,7 +136,7 @@ async def generate_data_for_stat(stat: str, num_players: int, std_dev_multiplier
 
 
 # Function to generate synthetic data for the team
-async def generate_team_data(num_players: int, std_dev_multiplier: float) -> AsyncGenerator[list[str]]:
+async def generate_team_data(num_players: int, std_dev_multiplier: float) -> AsyncGenerator[list[str] | list, Any]:
     """
     Generate team data for a basketball stat sheet.
 
