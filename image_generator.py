@@ -10,15 +10,21 @@ logging.basicConfig(filename='main.log', level=logging.INFO, format='%(asctime)s
 
 
 # Function to generate and save an image of the basketball stat sheet
-async def generate_and_save_image(csv_path, save_path, font_size=random.choice([12, 14, 16, 18]), cell_width=150,
-                                  cell_height=30):
+async def generate_and_save_image(
+        csv_path: str,
+        save_path: str,
+        font_size: int = random.choice([12, 14, 16, 18]),
+        cell_width: int = 150,
+        cell_height: int = 30
+):
     """
     Generate and save an image based on data from a CSV file.
 
     Args:
         csv_path (str): The path to the CSV file containing the data.
         save_path (str): The path to save the generated image.
-        font_size (int, optional): The font size for the text in the image. Defaults to a random choice of [12, 14, 16, 18].
+        font_size (int, optional): The font size for the text in the image. Defaults to a random choice of
+            [12, 14, 16, 18].
         cell_width (int, optional): The width of each cell in the data table. Defaults to 150.
         cell_height (int, optional): The height of each cell in the data table. Defaults to 30.
 
@@ -37,16 +43,16 @@ async def generate_and_save_image(csv_path, save_path, font_size=random.choice([
         # Read the CSV file
         with open(csv_path, newline='') as csvfile:
             reader = csv.reader(csvfile)
-            data = list(reader)
-        num_rows = len(data)
-        num_cols = len(data[0])
+            data: list[list[str]] = list(reader)
+        num_rows: int = len(data)
+        num_cols: int = len(data[0])
 
         # Define the data to be displayed
 
-        img_width = num_cols * cell_width
-        img_height = (num_rows + 3) * cell_height
-        img = Image.new('RGB', (img_width, img_height), color='white')
-        d = ImageDraw.Draw(img)
+        img_width: int = num_cols * cell_width
+        img_height: int = (num_rows + 3) * cell_height
+        img: Image = Image.new('RGB', (img_width, img_height), color='white')
+        d: ImageDraw = ImageDraw.Draw(img)
 
         # The font style, size, and weight may vary
 
@@ -67,17 +73,17 @@ async def generate_and_save_image(csv_path, save_path, font_size=random.choice([
         # represent different weights (e.g., regular, bold) from your font pool.
         # Then, you would use the selected font file when creating the ImageFont object.
         # Ex: font = ImageFont.truetype(font_file, font_style, font_size)
-        font = ImageFont.load_default(size=font_size)
+        font: ImageFont = ImageFont.load_default(size=font_size)
 
         # The title may vary in content and placement
 
         # Define possible titles
-        titles = ['Basketball Statistics', 'Game Summary', 'Player Stats', 'Team Performance']
-        title = random.choice(titles)  # Randomly select a title
+        titles: list[str] = ['Basketball Statistics', 'Game Summary', 'Player Stats', 'Team Performance']
+        title: str = random.choice(titles)  # Randomly select a title
 
         # Determine title placement
-        title_x = random.randint(10, img_width - font_size * len(title))  # Random horizontal placement
-        title_y = random.randint(10, 30)  # Random vertical placement
+        title_x: int = random.randint(10, img_width - font_size * len(title))  # Random horizontal placement
+        title_y: int = random.randint(10, 30)  # Random vertical placement
 
         # Draw the title
         d.text((title_x, title_y), title, fill="black", font=font)

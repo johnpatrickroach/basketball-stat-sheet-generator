@@ -11,7 +11,7 @@ from image_generator import generate_and_save_image
 from synthetic_data_generator import generate_and_save_data
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
     """
     Parse command line arguments for generating synthetic basketball stat sheet images and CSV files.
 
@@ -21,7 +21,7 @@ def parse_arguments():
     Raises:
         None.
     """
-    parser = argparse.ArgumentParser(
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="Generate synthetic basketball stat sheet images and CSV files."
     )
     parser.add_argument(
@@ -64,7 +64,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-async def main():
+async def main() -> None:
     """
     Run the main process for generating synthetic basketball stat sheet images and CSV files.
 
@@ -74,13 +74,13 @@ async def main():
     Raises:
         None.
     """
-    args = parse_arguments()
+    args: argparse.Namespace = parse_arguments()
 
     # Set random seed for reproducibility
     random.seed(args.random_seed)
 
     # Get current working directory
-    cwd = os.getcwd()
+    cwd: str = os.getcwd()
 
     # Create csv output directory if it doesn't exist
     os.makedirs(f'{cwd}/{args.csv_output_directory}', exist_ok=True)
@@ -89,14 +89,14 @@ async def main():
     os.makedirs(f'{cwd}/{args.image_output_directory}', exist_ok=True)
 
     # Define csv save path
-    csv_save_path = f"{cwd}/{args.csv_output_directory}"
+    csv_save_path: str = f"{cwd}/{args.csv_output_directory}"
 
     # Define image save path
-    image_save_path = f"{cwd}/{args.image_output_directory}"
+    image_save_path: str = f"{cwd}/{args.image_output_directory}"
 
     async with Pool() as pool:
-        now_epoc = int(time.time())
-        csv_save_paths = [
+        now_epoc: int = int(time.time())
+        csv_save_paths: list[str] = [
             f"{csv_save_path}/set_{i}_{now_epoc}.csv"
             for i in range(1, args.num_sets + 1)
         ]

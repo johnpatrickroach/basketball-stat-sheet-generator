@@ -2,6 +2,7 @@
 import csv
 import logging
 import random
+from typing import AsyncGenerator
 
 import numpy as np
 from faker import Faker
@@ -13,7 +14,7 @@ logging.basicConfig(filename='log.log', level=logging.INFO, format='%(asctime)s 
 fake = Faker()
 
 # Define the mean deviation for each stat category
-stats_mean_and_st_dev = {
+stats_mean_and_st_dev: dict[str, dict[str, float]] = {
     'Points': {"mean": 10.000, "std_dev": 3.0000},
     'Rebounds': {"mean": 3.0000, "std_dev": 0.9000},
     'Assists': {"mean": 2, "std_dev": 0.6000},
@@ -37,29 +38,30 @@ async def generate_stats_to_use_and_column_names() -> tuple[list[str], list[str]
             - The index of the number column in the list of all column names.
     """
     # Name and number columns
-    name_column = random.choice(["Player", "Name", "Player Name"])
-    number_column = random.choice(["#", "Number", "Player Number"])
-    name_number_columns = [name_column, number_column]
+    name_column: str = random.choice(["Player", "Name", "Player Name"])
+    number_column: str = random.choice(["#", "Number", "Player Number"])
+    name_number_columns: list[str] = [name_column, number_column]
 
     # After points, the other stats may have different orderings and some may not always be included
     # Define statistic keys and their display names
-    stat_keys = list(stats_mean_and_st_dev.keys())
-    stats_to_use = ['Points']  # Always include points
+    stat_keys: list[str] = list(stats_mean_and_st_dev.keys())
+    stats_to_use: list[str] = ['Points']  # Always include points
 
-    excluded_stats = random.sample(stat_keys[1:], k=random.randint(0, len(stat_keys) - 2))  # Randomly exclude stats
+    # Randomly exclude stats
+    excluded_stats: list[str] = random.sample(stat_keys[1:], k=random.randint(0, len(stat_keys) - 2))
 
     # Add non-excluded stats to the display names list, except for 'Points', since 'Points' already included
     stats_to_use.extend(
         stat for stat in stat_keys if (stat not in excluded_stats and stat != 'Points')
     )
 
-    all_columns = name_number_columns + stats_to_use
+    all_columns: list[str] = name_number_columns + stats_to_use
 
     # Shuffle the column names to introduce variability
     random.shuffle(all_columns)
 
     # Now get just stat columns
-    stat_columns = [column for column in all_columns if column not in name_number_columns]
+    stat_columns: list[str] = [column for column in all_columns if column not in name_number_columns]
 
     # Get name column index
     name_column_index: int = all_columns.index(name_column)
@@ -70,7 +72,7 @@ async def generate_stats_to_use_and_column_names() -> tuple[list[str], list[str]
 
 
 # Function to generate synthetic player names and player numbers
-async def generate_player_names(num_players) -> list[str]:
+async def generate_player_names(num_players: int) -> list[str]:
     """
     Generate a list of synthetic player names.
 
@@ -86,7 +88,7 @@ async def generate_player_names(num_players) -> list[str]:
     ]
 
 
-async def generate_player_numbers(num_players) -> list[int]:
+async def generate_player_numbers(num_players: int) -> list[int]:
     """
     Generate a list of synthetic player numbers.
 
@@ -103,7 +105,7 @@ async def generate_player_numbers(num_players) -> list[int]:
 
 
 # Function to generate synthetic data for the team
-async def generate_data_for_stat(stat, num_players, std_dev_multiplier) -> np.ndarray:
+async def generate_data_for_stat(stat: str, num_players: int, std_dev_multiplier: float) -> np.ndarray:
     """
     Generate synthetic data for a specific statistic.
 
@@ -116,14 +118,15 @@ async def generate_data_for_stat(stat, num_players, std_dev_multiplier) -> np.nd
         np.ndarray: An array of synthetic data for the specified statistic.
 
     Note:
-        The function uses the mean and standard deviation of the specified statistic from the `stats_mean_and_st_dev` dictionary
+        The function uses the mean and standard deviation of the specified statistic from the `stats_mean_and_st_dev`
+            dictionary
         to generate data using a normal distribution with the specified standard deviation multiplier.
     """
-    mean = stats_mean_and_st_dev[stat]["mean"]
-    std_dev = stats_mean_and_st_dev[stat]["std_dev"]
+    mean: float = stats_mean_and_st_dev[stat]["mean"]
+    std_dev: float = stats_mean_and_st_dev[stat]["std_dev"]
     # lower_limit = max(0, mean - (2 * (std_dev * std_dev_multiplier)))
     # upper_limit = mean + (2 * (std_dev * std_dev_multiplier))
-    values = np.random.normal(
+    values: np.ndarray = np.random.normal(
         mean,
         std_dev * std_dev_multiplier,
         num_players
@@ -133,7 +136,7 @@ async def generate_data_for_stat(stat, num_players, std_dev_multiplier) -> np.nd
 
 
 # Function to generate synthetic data for the team
-async def generate_team_data(num_players, std_dev_multiplier):
+async def generate_team_data(num_players: int, std_dev_multiplier: float) -> AsyncGenerator[list[str]]:
     """
     Generate team data for a basketball stat sheet.
 
@@ -175,7 +178,7 @@ async def generate_team_data(num_players, std_dev_multiplier):
         player_row[name_column_index] = player_name
         player_row[number_column_index] = player_number
         for stat, value in zip(stat_columns, stat_values):
-            stat_index = all_columns.index(stat)
+            stat_index: int = all_columns.index(stat)
             player_row[stat_index] = value
         # Yield player row
         yield player_row
@@ -184,14 +187,14 @@ async def generate_team_data(num_players, std_dev_multiplier):
     team_totals_row[name_column_index] = 'Team Totals'
     team_totals_row[number_column_index] = ''
     for stat, value in zip(stat_columns, team_totals):
-        stat_index = all_columns.index(stat)
+        stat_index: int = all_columns.index(stat)
         team_totals_row[stat_index] = value
     # Yield team totals row
     yield team_totals_row
 
 
 # Function to save the data to a CSV file
-async def generate_and_save_data(save_path, num_players, std_dev_multiplier):
+async def generate_and_save_data(save_path, num_players, std_dev_multiplier) -> str:
     """
     Generate and save team data to a CSV file.
 
