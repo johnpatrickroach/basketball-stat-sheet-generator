@@ -12,6 +12,26 @@ logging.basicConfig(filename='main.log', level=logging.INFO, format='%(asctime)s
 # Function to generate and save an image of the basketball stat sheet
 async def generate_and_save_image(csv_path, save_path, font_size=random.choice([12, 14, 16, 18]), cell_width=150,
                                   cell_height=30):
+    """
+    Generate and save an image based on data from a CSV file.
+
+    Args:
+        csv_path (str): The path to the CSV file containing the data.
+        save_path (str): The path to save the generated image.
+        font_size (int, optional): The font size for the text in the image. Defaults to a random choice of [12, 14, 16, 18].
+        cell_width (int, optional): The width of each cell in the data table. Defaults to 150.
+        cell_height (int, optional): The height of each cell in the data table. Defaults to 30.
+
+    Raises:
+        Exception: If there is an error generating the image.
+
+    Examples:
+        # Generate and save an image using default settings
+        await generate_and_save_image('data.csv', 'image.png')
+
+        # Generate and save an image with custom font size and cell dimensions
+        await generate_and_save_image('data.csv', 'image.png', font_size=16, cell_width=200, cell_height=40)
+    """
     try:
         logging.info("Image generation process started.")
         # Read the CSV file

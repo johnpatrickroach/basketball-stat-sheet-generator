@@ -26,6 +26,16 @@ stats_mean_and_st_dev = {
 
 # Function to generate synthetic stats to use for the team with visual variations
 async def generate_stats_to_use_and_column_names() -> tuple[list[str], list[str], int, int]:
+    """
+    Generate the list of column names and statistics to use for generating synthetic basketball data.
+
+    Returns:
+        tuple[list[str], list[str], int, int]: A tuple containing the following:
+            - A list of all column names, including name, number, and statistics columns.
+            - A list of only the statistics column names.
+            - The index of the name column in the list of all column names.
+            - The index of the number column in the list of all column names.
+    """
     # Name and number columns
     name_column = random.choice(["Player", "Name", "Player Name"])
     number_column = random.choice(["#", "Number", "Player Number"])
@@ -61,6 +71,15 @@ async def generate_stats_to_use_and_column_names() -> tuple[list[str], list[str]
 
 # Function to generate synthetic player names and player numbers
 async def generate_player_names(num_players) -> list[str]:
+    """
+    Generate a list of synthetic player names.
+
+    Args:
+        num_players (int): The number of player names to generate.
+
+    Returns:
+        list[str]: A list of synthetic player names.
+    """
     return [
         fake.name()
         for _ in range(num_players)
@@ -68,6 +87,15 @@ async def generate_player_names(num_players) -> list[str]:
 
 
 async def generate_player_numbers(num_players) -> list[int]:
+    """
+    Generate a list of synthetic player numbers.
+
+    Args:
+        num_players (int): The number of player numbers to generate.
+
+    Returns:
+        list[int]: A list of synthetic player numbers.
+    """
     return [
         fake.random_int(min=1, max=99)
         for _ in range(num_players)
@@ -76,6 +104,21 @@ async def generate_player_numbers(num_players) -> list[int]:
 
 # Function to generate synthetic data for the team
 async def generate_data_for_stat(stat, num_players, std_dev_multiplier) -> np.ndarray:
+    """
+    Generate synthetic data for a specific statistic.
+
+    Args:
+        stat (str): The name of the statistic to generate data for.
+        num_players (int): The number of players to generate data for.
+        std_dev_multiplier (float): The standard deviation multiplier for generating data.
+
+    Returns:
+        np.ndarray: An array of synthetic data for the specified statistic.
+
+    Note:
+        The function uses the mean and standard deviation of the specified statistic from the `stats_mean_and_st_dev` dictionary
+        to generate data using a normal distribution with the specified standard deviation multiplier.
+    """
     mean = stats_mean_and_st_dev[stat]["mean"]
     std_dev = stats_mean_and_st_dev[stat]["std_dev"]
     # lower_limit = max(0, mean - (2 * (std_dev * std_dev_multiplier)))
@@ -91,6 +134,26 @@ async def generate_data_for_stat(stat, num_players, std_dev_multiplier) -> np.nd
 
 # Function to generate synthetic data for the team
 async def generate_team_data(num_players, std_dev_multiplier):
+    """
+    Generate team data for a basketball stat sheet.
+
+    Args:
+        num_players (int): The number of players on the team.
+        std_dev_multiplier (float): The standard deviation multiplier for generating player stats.
+
+    Yields:
+        list: The column names row.
+        list: Each player's row, including their name, number, and stats.
+        list: The team totals row.
+
+    Raises:
+        None.
+
+    Examples:
+        team_data_generator = generate_team_data(num_players=10, std_dev_multiplier=2.0)
+        for row in team_data_generator:
+            print(row)
+    """
     all_columns, stat_columns, name_column_index, number_column_index = await generate_stats_to_use_and_column_names()
     team_totals: list = []
     team_stats: dict = {}
@@ -129,6 +192,20 @@ async def generate_team_data(num_players, std_dev_multiplier):
 
 # Function to save the data to a CSV file
 async def generate_and_save_data(save_path, num_players, std_dev_multiplier):
+    """
+    Generate and save team data to a CSV file.
+
+    Args:
+        save_path (str): The path to save the generated data CSV file.
+        num_players (int): The number of players on the team.
+        std_dev_multiplier (float): The standard deviation multiplier for generating player stats.
+
+    Returns:
+        str: The path where the data CSV file is saved.
+
+    Raises:
+        None.
+    """
     logging.info("Data generation process started.")
     try:
         with open(save_path, 'w') as file:

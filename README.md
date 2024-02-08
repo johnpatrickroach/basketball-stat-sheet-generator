@@ -86,7 +86,7 @@ These to-do items outline potential enhancements and improvements that can be ma
 Generator to enhance its functionality, readability, and versatility.
 
 - [ ] Add type hints
-- [ ] Add function doc strings
+- [x] Add function doc strings
 - [ ] Add tests with Pytest
 - [ ] Try using Pandas for synthetic data generation
 - [ ] Try using matplotlib, dataframe-image, df2img, and plotly for image generation

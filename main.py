@@ -12,6 +12,15 @@ from synthetic_data_generator import generate_and_save_data
 
 
 def parse_arguments():
+    """
+    Parse command line arguments for generating synthetic basketball stat sheet images and CSV files.
+
+    Returns:
+        argparse.Namespace: Parsed command line arguments.
+
+    Raises:
+        None.
+    """
     parser = argparse.ArgumentParser(
         description="Generate synthetic basketball stat sheet images and CSV files."
     )
@@ -56,6 +65,15 @@ def parse_arguments():
 
 
 async def main():
+    """
+    Run the main process for generating synthetic basketball stat sheet images and CSV files.
+
+    Returns:
+        None.
+
+    Raises:
+        None.
+    """
     args = parse_arguments()
 
     # Set random seed for reproducibility
