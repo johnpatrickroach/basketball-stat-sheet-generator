@@ -78,10 +78,21 @@ python main.py \
 
 This command generates 3 sets of synthetic basketball stat sheets and images with the specified parameters.
 
---- 
+---
 
-With these additions, users can easily understand the available command-line options and how to customize the generation process according to their needs.
+## To-Do
 
+These to-do items outline potential enhancements and improvements that can be made to the Basketball Stat Sheet 
+Generator to enhance its functionality, readability, and versatility.
+
+- [ ] Add type hints
+- [ ] Add function doc strings
+- [ ] Add tests with Pytest
+- [ ] Try using Pandas for synthetic data generation
+- [ ] Try using matplotlib, dataframe-image, df2img, and plotly for image generation
+- [ ] Add uniform distribution (and possibly other distributions) as an option
+
+---
 
 ## Authors
 
