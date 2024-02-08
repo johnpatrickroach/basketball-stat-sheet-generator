@@ -1,0 +1,4 @@
+aiomultiprocess~=0.9.0
+numpy~=1.26.4
+pillow~=10.2.0
+Faker~=23.1.0
